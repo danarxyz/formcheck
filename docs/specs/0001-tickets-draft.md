@@ -1,6 +1,6 @@
-# Tickets draft for spec 0001 — awaiting owner approval
+# Tickets draft for spec 0001 — published
 
-> Output of the `to-tickets` skill, step 4 ("quiz the user"). Not yet published: once the GitHub repo exists and the breakdown is approved, publish one issue per ticket in this order, using the native blocking links.
+> Output of the `to-tickets` skill. Approved by the owner and published on 2026-10-21 as sub-issues of the spec, [danarxyz/formcheck#1](https://github.com/danarxyz/formcheck/issues/1). GitHub Issues are now the source of truth; this file is the historical draft. The published breakdown differs from the draft below as recorded under "Owner answers".
 
 **Already built in the foundation commit** (no ticket needed): Library schema + validation + search, Muscle taxonomy, body map, Plans module (add/remove/reorder, owner-scoped, PGlite-tested), Plan/Library/Exercise/Sign-in pages, Google auth with allowlist, E2E smoke test, CI, pre-commit, module boundaries. One draft Exercise: Conventional Deadlift.
 
@@ -43,3 +43,11 @@
 - Granularity: are the three content tickets the right size, or one ticket per Exercise?
 - Is sign-out (2) needed for the MVP, given only you use the app?
 - Should the design pass (7) come before the content tickets, so content is reviewed in its final layout?
+
+## Owner answers (2026-10-21)
+
+- **One ticket per Exercise**: tickets 3–5 became #4–#17 (Farmer's Carry #16 and Hanging Leg Raise #17 marked optional).
+- **Sign-out is needed**: #3.
+- **Content first**: the design pass (#20) is blocked by Trap Bar Deadlift #4, Pull-Up #5 and Barbell Row #7, so variants are judged with real content.
+
+Also published: services #2, error pages #18, owner verification #21 (blocked by all content tickets), and a new ticket, #19, to run the E2E smoke test locally without Docker.
