@@ -1,24 +1,21 @@
 import "server-only";
-import { neon } from "@neondatabase/serverless";
-import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
-import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
+import { attachDatabasePool } from "@vercel/functions";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { serverEnv } from "@/env";
 import type { PlansDb } from "@/packages/plans";
 import * as schema from "./schema";
 
-const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "postgres"]);
-
 /**
- * Neon over HTTP in production; plain node-postgres for a local or CI Postgres
- * (Neon's HTTP driver only talks to Neon). Both satisfy the same Drizzle type.
+ * node-postgres over Neon's pooled connection string — Neon's recommended
+ * driver for Vercel Fluid compute, where the pool is reused across requests.
+ * The same driver serves a local or CI Postgres.
  */
 function create(): PlansDb {
-  const url = serverEnv().DATABASE_URL;
-  if (LOCAL_HOSTS.has(new URL(url).hostname)) {
-    return drizzlePg(new Pool({ connectionString: url }), { schema });
-  }
-  return drizzleNeon(neon(url), { schema });
+  const pool = new Pool({ connectionString: serverEnv().DATABASE_URL });
+  // On Vercel, keeps the function alive until idle connections are released.
+  attachDatabasePool(pool);
+  return drizzle(pool, { schema });
 }
 
 let db: PlansDb | undefined;

@@ -1,6 +1,6 @@
 # Spec: MVP — Exercise form Library and daily Plans
 
-> To be published as a GitHub issue with the `ready-for-agent` label once the repo exists. Vocabulary follows `CONTEXT.md`; decisions respect ADR-0001 and ADR-0002.
+> Published as [danarxyz/formcheck#1](https://github.com/danarxyz/formcheck/issues/1); its tickets are that issue's sub-issues. Vocabulary follows `CONTEXT.md`; decisions respect ADR-0001 and ADR-0002.
 
 ## Problem Statement
 
