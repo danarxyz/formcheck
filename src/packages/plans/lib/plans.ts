@@ -34,8 +34,8 @@ export type PlansDb = PgDatabase<PgQueryResultHKT, typeof schema>;
 
 export type PlansDeps = { isExerciseSlug: (slug: string) => boolean };
 
-// Every statement below is a single SQL statement: the Neon HTTP driver has no
-// interactive transactions, and the unique constraints make each step safe on its own.
+// Every statement below is a single SQL statement, so no transactions are needed:
+// the unique constraints make each step safe on its own.
 export function createPlans(db: PlansDb, deps: PlansDeps): Plans {
   const planIdFor = (ownerId: string, date: PlanDate): SQL =>
     sql`(select ${plans.id} from ${plans} where ${plans.ownerId} = ${ownerId} and ${plans.date} = ${date})`;
