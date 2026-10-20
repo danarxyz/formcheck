@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { ReferenceVideo } from "@/components/reference-video";
 import { Badge } from "@/components/ui/badge";
 import { copy } from "@/copy";
@@ -17,7 +18,30 @@ export async function generateMetadata({ params }: PageProps<"/exercise/[slug]">
   return { title: exercise ? `${exercise.name} — ${copy.appName}` : copy.appName };
 }
 
-export default async function ExercisePage({ params }: PageProps<"/exercise/[slug]">) {
+// The params read lives inside <Suspense> so the route's App Shell stays shared
+// across Exercises (instant navigation); each slug is still prerendered.
+export default function ExercisePage({ params }: PageProps<"/exercise/[slug]">) {
+  return (
+    <Suspense fallback={<ExerciseSkeleton />}>
+      <ExerciseDetails params={params} />
+    </Suspense>
+  );
+}
+
+function ExerciseSkeleton() {
+  return (
+    <div className="flex flex-col gap-8" aria-busy>
+      <div className="bg-muted h-8 w-2/3 animate-pulse rounded-md" />
+      <div className="flex flex-col gap-2">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="bg-muted h-12 animate-pulse rounded-lg" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+async function ExerciseDetails({ params }: Pick<PageProps<"/exercise/[slug]">, "params">) {
   const exercise = getExercise((await params).slug);
   if (!exercise) notFound();
 
